@@ -1,0 +1,21 @@
+# .gitignore
+
+# 忽略 node_modules 資料夾
+node_modules/
+
+# 忽略 build 或 dist 資料夾（視乎你的專案結構）
+build/
+dist/
+
+# 忽略一些不需要上傳的檔案
+.env
+.DS_Store
+
+# 如果有使用 TypeScript，忽略編譯產生的檔案
+*.js
+*.js.map
+*.d.ts
+
+# 如果有使用編輯器的設定檔，忽略它們
+.vscode/
+.idea/
