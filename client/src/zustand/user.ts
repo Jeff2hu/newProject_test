@@ -1,5 +1,5 @@
+import { UserData } from "@/type/account/userType";
 import { create } from "zustand";
-import { UserData } from "../type/account/userType";
 
 interface UserStore {
   user: UserData | null;

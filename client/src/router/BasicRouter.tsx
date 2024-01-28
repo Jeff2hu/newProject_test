@@ -1,3 +1,4 @@
+import Alert from "@/component/Alert";
 import Home from "@/page/Home";
 import useUserStore from "@/zustand/user";
 import { Avatar, Button, Stack } from "@mui/material";
@@ -27,6 +28,7 @@ export const BasicRouter = () => {
         <Avatar />
       </Button>
       <Outlet />
+      <Alert />
     </Stack>
   );
 };

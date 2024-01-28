@@ -1,6 +1,8 @@
 import { useLoginMutation } from "@/api/account/login";
 import { getUserInfo } from "@/api/account/user";
 import { LoginResponse } from "@/type/account/loginType";
+import useAlertStore from "@/zustand/alert";
+import useUserStore from "@/zustand/user";
 import { Button, Stack, TextField } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { useCallback, useEffect, useState } from "react";
@@ -19,29 +21,32 @@ const validationSchema = Yup.object({
 
 const LoginScreen = () => {
   const naviagte = useNavigate();
+  const { user } = useUserStore();
+  const { setAlert, clearAlert } = useAlertStore();
   const [userId, setUserId] = useState<number>(0);
 
-  const onSuccess = useCallback((data: LoginResponse) => {
+  getUserInfo(userId);
+  const { mutate } = useLoginMutation((data: LoginResponse) => {
+    setAlert({ open: true, message: "Login Success" });
     setUserId(data.id);
-  }, []);
+  });
 
-  const navigateToUserInfo = useCallback(
-    () => naviagte(`/user/${userId}`, { replace: true }),
-    [naviagte, userId]
-  );
-
-  const { isLoading, isSuccess } = getUserInfo(userId);
-  const { mutate } = useLoginMutation(onSuccess);
+  const navigateToUserInfo = useCallback(() => {
+    if (!user) return;
+    naviagte(`/user/${user.id}`, { replace: true });
+  }, [naviagte, user]);
 
   useEffect(() => {
-    if (isSuccess) {
+    if (user) {
       navigateToUserInfo();
     }
-  }, [isSuccess, navigateToUserInfo]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+    return () => {
+      setUserId(0);
+      setTimeout(() => {
+        clearAlert();
+      }, 1000);
+    };
+  }, [user, navigateToUserInfo]);
 
   return (
     <Stack alignItems="center">

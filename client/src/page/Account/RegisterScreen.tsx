@@ -1,4 +1,6 @@
 import { useRegisterMutation } from "@/api/account/register";
+import { RegisterRequest } from "@/type/account/registerType";
+import useAlertStore from "@/zustand/alert";
 import { Button, Stack, TextField } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import { useCallback } from "react";
@@ -19,12 +21,28 @@ const validationSchema = Yup.object({
 
 const RegisterScreen = () => {
   const naviagte = useNavigate();
+  const { setAlert, clearAlert } = useAlertStore();
 
   const onSuccess = useCallback(() => {
     naviagte("/account/login", { replace: true });
-  }, []);
+    clearAlert();
+  }, [clearAlert, naviagte]);
 
   const { mutate } = useRegisterMutation(onSuccess);
+
+  const handleSubmit = useCallback(
+    (value: RegisterRequest) => {
+      setAlert({
+        open: true,
+        message: "Sure to register?",
+        onOk: () => {
+          mutate(value);
+          clearAlert();
+        },
+      });
+    },
+    [mutate, clearAlert]
+  );
 
   return (
     <Stack alignItems="center">
@@ -33,7 +51,7 @@ const RegisterScreen = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
-        onSubmit={mutate}
+        onSubmit={handleSubmit}
       >
         {(formik) => (
           <Form style={{ display: "flex", flexDirection: "column", gap: 10 }}>
