@@ -15,11 +15,13 @@ app.use(cors());
 app.use(morgan("combined"));
 
 const loginRoutes = require("./routes/login");
+const registerRoutes = require("./routes/register");
 const userRoutes = require("./routes/user");
 
 // 使用正確的路徑
 app.use("/api", loginRoutes);
 app.use("/api", userRoutes);
+app.use("/api", registerRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

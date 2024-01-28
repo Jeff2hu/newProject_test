@@ -1,17 +1,33 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Home from "./page/Home";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import NotFound from "./page/NotFound";
-import LoginScreen from "./page/login";
+import { AccountRouter, AccountRouterChildrens } from "./router/AccountRouter";
+import { BasicRouter, BasicRouterChildrens } from "./router/BasicRouter";
 
 function App() {
+  const queryClient = new QueryClient();
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <BasicRouter />,
+      children: BasicRouterChildrens,
+    },
+    {
+      path: "account",
+      element: <AccountRouter />,
+      children: AccountRouterChildrens,
+    },
+    {
+      path: "*",
+      element: <NotFound />,
+    },
+  ]);
+
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginScreen />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   );
 }
 
