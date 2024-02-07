@@ -1,7 +1,7 @@
 import Alert from "@/component/Alert";
 import Home from "@/page/Home";
 import useUserStore from "@/zustand/user";
-import { Avatar, Button, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import UserInfo from "../page/Account/UserInfoScreen";
@@ -17,16 +17,7 @@ export const BasicRouter = () => {
   }, [user]);
 
   return (
-    <Stack
-      p={3}
-      bgcolor="#eee"
-      height="100vh"
-      justifyContent="center"
-      alignItems="center"
-    >
-      <Button onClick={() => navigate("/")}>
-        <Avatar />
-      </Button>
+    <Stack p={3}>
       <Outlet />
       <Alert />
     </Stack>
