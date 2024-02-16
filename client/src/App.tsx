@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import NotFound from "./page/NotFound";
 
 function App() {
   const queryClient = new QueryClient();
@@ -24,31 +25,21 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       {/* <RouterProvider router={router} /> */}
-      <BrowserRouter basename="/newProject_test">
+      <BrowserRouter>
         <Routes>
+          {/* <Route path="/" element={<Link to="/game">Godot Game Links</Link>} /> */}
           <Route
             path="/"
             element={
-              <>
-                <Link to="/game">Godot Game</Link>
-              </>
+              <iframe
+                src="/godot-export/index.html"
+                title="Godot Game Test HTML"
+                width="100vw"
+                height="100vh"
+              />
             }
           />
-        </Routes>
-        <Routes>
-          <Route
-            path="/game"
-            element={
-              <>
-                <iframe
-                  src="/godot-export/godot.html"
-                  title="Godot Game Test HTML"
-                  width="100vw"
-                  height="100vh"
-                />
-              </>
-            }
-          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
